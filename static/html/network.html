@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+  <title>Bootstrap 4 Website Example</title>
+  <meta charset="utf-8">
+  <link rel="icon" href="data:;base64,=">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.bootcss.com/angular.js/1.5.11/angular.min.js"></script>
+  <script src="js/server.js"></script>
+  <link rel="stylesheet" href="css/server.css">
+
+</head>
+
+<body ng-controller="siteCtrl">
+  <div class="jumbotron text-center" style="margin-bottom:0;padding: 1.5%">
+    <h3 id="title">网络设备信息页面</h3>
+  </div>
+  <nav id="nav" class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" ng-href="http://{{ip_link}}">主页</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse mt-2 mb-2" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link " ng-href="http://{{ip_link}}/server">服务器信息</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" ng-href="http://{{ip_link}}/network">网络设备信息</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" ng-href="http://{{ip_link}}/sql">数据库信息</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" ng-href="http://{{ip_link}}/system">业务系统信息</a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link " ng-href="http://{{ip_link}}/user">用户信息</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" ng-href="http://{{ip_link}}/logout/check">退出登录</a>
+        </li>
+      </ul>
+    </div>
+    <div class="input-group mt-2 mb-2">
+      <select class="form-control" ng-model="selectedValue" ng-options="i for i in options"
+        ng-change="selectedChange(selectedValue)">
+      </select>
+      <input type="text" class="form-control" ng-model="search_info" ng-keyup="search_input($event)">
+      <button class="btn btn-primary" type="button" ng-click="get_data(url_get_data)">搜索</button>
+    </div>
+  </nav>
+  <div class="container" style="margin-top:30px">
+    <div class="row">
+      <div class="col-sm-2">
+        <h4 style="cursor:pointer">{{call_me}}</h4>
+        <div style="cursor:pointer" class="fakeimg"><img ng-src="{{personal_img}}" alt="丢失了" srcset=""></div>
+        <p style="margin:5px" ng-show="_level">设备管理</p>
+        <ul class="nav nav-pills flex-column" ng-show="_level" ng-show="_level">
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" href="#" data-target="#myModal"
+              ng-click="clean_data(add_data,add_data)">添加设备</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" ng-click="post_data(del_data)">删除设备</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-10 ">
+        <!-- <h2>标题</h2>
+        <h5>副标题</h5> -->
+        <div class="  tables-height">
+          <table class="table table-bordered table-hover  ">
+            <thead>
+              <tr>
+                <th>服务器应用</th>
+                <th>IP地址</th>
+                <!-- <th>login_name</th>
+                <th>login_password</th>
+                <th>os</th> -->
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="i in txt |limitTo:10:start_page ">
+                <td style="display:none">{{i.ID}}</td>
+                <td ng-click="select_id($index)"> <input type="checkbox"ng-show="_level"> <span>{{i.projects}}</span></td>
+                <td>{{i.ip}}</td>
+                <!-- <td>{{i.login_name}}</td>
+                <td>{{i.login_password}}</td>
+                <td>{{i.os}}</td> -->
+                <td> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"
+                    ng-hide="_level" ng-click="edit(i)">
+                    <span class="glyphicon glyphicon-user"></span> 查看
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" ng-show="_level" data-toggle="modal"
+                    data-target="#myModal" ng-click="edit(i,readonly,change_data)">
+                    <span class="glyphicon glyphicon-user"></span> 编辑
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="input-group mb-3">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" ng-click="prev_btn()">上一页</a>
+            </li>
+          </ul>
+          <ul class="pagination" ng-repeat="i in page |limitTo:5:page_index">
+            <li class="page-item" ng-class="{'active': $index != focus,'active': $index == focus}"><a class="page-link"
+                href="#" ng-click="index_page_btn($index)">{{i+1}}</a></li>
+          </ul>
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" ng-click="next_btn()">下一页</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="jumbotron text-center bottom-color" style="margin-bottom:0">
+    <p>Copyright © 2018-2019 creator by bill</p>
+  </div>
+  <div class="modal fade" id="myModal">
+    <div class=" modal-dialog">
+      <div class="modal-content">
+        <!-- 模态框头部 -->
+        <div class="modal-header">
+          <h4 class="modal-title">设备详情</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- 模态框主体 -->
+        <div class="modal-body">
+          <ul class="list-group">
+            <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text badge-primary">应用/设备</span>
+              </div>
+              <input type="text" class="form-control" ng-readonly="readonly" ng-model="projects" value="{{projects}}">
+            </div>
+            <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text badge-primary">用户登录&nbsp;</span>
+              </div>
+              <input type="text" class="form-control" ng-readonly="readonly" ng-model="login_name"
+                value="{{login_name}}">
+            </div>
+            <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text badge-primary">用户密码&nbsp;</span>
+              </div>
+              <input type="text" class="form-control" ng-readonly="readonly" ng-model="login_password"
+                value="{{login_password}}">
+            </div>
+            <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text badge-primary">设备位置&nbsp;</span>
+              </div>
+              <input type="text" class="form-control" ng-readonly="readonly" ng-model="location" value="{{location}}">
+            </div>
+            <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text badge-primary">设备IP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              </div>
+              <input type="text" class="form-control" ng-readonly="readonly" ng-model="ip" value="{{ip}}">
+            </div>
+            <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text badge-primary">设备状态&nbsp;</span>
+              </div>
+              <input type="text" class="form-control" ng-readonly="readonly" ng-model="remark" value="{{remark}}">
+            </div>
+          </ul>
+        </div>
+        <!-- 模态框底部 -->
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-info" ng-click="post_data(what_crtl)" ng-show="_level" value="提交"
+            data-dismiss="modal">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+.fakeimg {
+    height: 200px;
+    background: #aaa;
+}
+
+@media screen and (min-width:1920px) {
+    #nav {
+        padding-left: 15%;
+        padding-right: 15%;
+
+    }
+
+    .container {
+        max-width: 1366px;
+    }
+}
+
+@media screen and (min-width:1366px) and (max-width:1680px) {
+    #nav {
+        padding-left: 10%;
+        padding-right: 10%;
+
+    }
+}
+
+@media screen and (min-width:1024px) and (max-width:1280px) {
+    #nav {
+        padding-left: 5%;
+        padding-right: 5%;
+
+    }
+}
+
+
+.fakeimg,
+img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    background-size: cover;
+    background: no-repeat;
+}
+
+
+.tables-height{
+    min-height: 630px;
+    height: 90%;
+
+}
+.btn-outline-secondary{
+    background-color: seashell
+}
+#nav .input-group{
+width: 30%;
+}
+.bottom-color{
+    background-color: white;
+    padding: 0.5%;
+    
+}
