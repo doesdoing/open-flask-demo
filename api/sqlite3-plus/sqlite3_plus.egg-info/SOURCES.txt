@@ -1,0 +1,8 @@
+README.md
+setup.py
+sqlite3_plus/__init__.py
+sqlite3_plus/sqlite3_plus.py
+sqlite3_plus.egg-info/PKG-INFO
+sqlite3_plus.egg-info/SOURCES.txt
+sqlite3_plus.egg-info/dependency_links.txt
+sqlite3_plus.egg-info/top_level.txt
