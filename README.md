@@ -5,4 +5,5 @@ demo version 1.1.0
 2.现在需要的模块 flask flask_jsonpify sqlite3_plus；   
 3.修复部分已知bug；   
 4.sql文件夹为sqlite3 DB文件；  
+5.默认登录账号密码为admin/123456
   
