@@ -75,31 +75,21 @@
         </ul>
       </div>
       <div class="col-sm-10 ">
-        <!-- <h2>标题</h2>
-        <h5>副标题</h5> -->
         <div class="  tables-height">
           <table class="table table-bordered table-hover  ">
             <thead>
               <tr>
                 <th>用户名字</th>
                 <th>登录权限</th>
-
-                <!-- <th>login_name</th>
-                <th>login_password</th>
-                <th>os</th> -->
                 <th>操作</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="i in txt |limitTo:10:start_page">
                 <td style="display:none"> {{i.ID}}</td>
-                <td ng-click="select_id($index)"><input type="checkbox" ng-show="_level"> <span>{{i.call_me}}</span>
+                <td ng-click="select_id($index)"><input type="checkbox" ng-show="_level"> <span>{{i.name}}</span>
                 </td>
                 <td>{{i.level}}</td>
-
-                <!-- <td>{{i.login_name}}</td>
-                <td>{{i.login_password}}</td>
-                <td>{{i.os}}</td> -->
                 <td>
                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"
                     ng-click="edit(i,readonly,change_data)">

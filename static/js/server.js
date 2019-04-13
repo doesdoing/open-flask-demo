@@ -34,6 +34,8 @@ app.controller('siteCtrl', function ($scope, $http) {
     $scope.url_get_data = 'http://' + $scope.api_link + '/api/' + $scope.api + '?callback=JSON_CALLBACK&start=' + $scope.start + '&end=' + $scope.end + $scope.temp;
     $scope.get_data = function (e) {
         $http.jsonp(e).success(function (res) {
+            console.log(res);
+            
             $scope.txt = res.data;
             $scope.len = res.len;
             $scope.personal_img = res.personal_img;
@@ -131,7 +133,7 @@ app.controller('siteCtrl', function ($scope, $http) {
         $scope.remark = i.remark != ('' && undefined) ? i.remark : null;
         $scope.software = i.software != ('' && undefined) ? i.software : null;
         $scope.os = i.os != ('' && undefined) ? i.os : null;
-        $scope.name = i.call_me != ('' && undefined) ? i.call_me : null;
+        $scope.name = i.name != ('' && undefined) ? i.name : null;
         $scope.level = i.level != ('' && undefined) ? i.level : null;
         $scope.username = i.username != ('' && undefined) ? i.username : null;
         $scope.password = i.password != ('' && undefined) ? i.password : null;

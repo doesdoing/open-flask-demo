@@ -73,17 +73,12 @@
         </ul>
       </div>
       <div class="col-sm-10 ">
-        <!-- <h2>标题</h2>
-        <h5>副标题</h5> -->
         <div class="  tables-height">
           <table class="table table-bordered table-hover  ">
             <thead>
               <tr>
                 <th>服务器应用</th>
                 <th>IP地址</th>
-                <!-- <th>login_name</th>
-                <th>login_password</th>
-                <th>os</th> -->
                 <th>操作</th>
               </tr>
             </thead>
@@ -92,9 +87,6 @@
                 <td style="display:none">{{i.ID}}</td>
                 <td ng-click="select_id($index)"> <input type="checkbox"ng-show="_level"> <span>{{i.projects}}</span></td>
                 <td>{{i.ip}}</td>
-                <!-- <td>{{i.login_name}}</td>
-                <td>{{i.login_password}}</td>
-                <td>{{i.os}}</td> -->
                 <td> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"
                     ng-hide="_level" ng-click="edit(i)">
                     <span class="glyphicon glyphicon-user"></span> 查看
@@ -133,12 +125,10 @@
   <div class="modal fade" id="myModal">
     <div class=" modal-dialog">
       <div class="modal-content">
-        <!-- 模态框头部 -->
         <div class="modal-header">
           <h4 class="modal-title">设备详情</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <!-- 模态框主体 -->
         <div class="modal-body">
           <ul class="list-group">
             <div class="input-group mb-3 input-group-sm">
