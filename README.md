@@ -1,9 +1,9 @@
 # flask-demo  
 
-demo version 1.2.1(2019/4/26)
-版本说明:
-1.增加多文件上传;
-2.修复已知BUG;
+demo version 1.2.1(2019/4/26)  
+版本说明:  
+1.增加多文件上传;  
+2.修复已知BUG;  
 
 demo version 1.2.0  
 版本说明:  
