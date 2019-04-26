@@ -1,6 +1,6 @@
 var app = angular.module('myApp', []);
 app.controller('siteCtrl', function ($scope, $http) {
-    $scope.ip_link = '127.0.0.1';
+    $scope.ip_link = '127.0.01';
     $scope.api_link = $scope.ip_link;
     $scope.start = 0;
     $scope.end = 10;
@@ -39,8 +39,19 @@ app.controller('siteCtrl', function ($scope, $http) {
     }
     $scope.which = $scope.api == 'server' || $scope.api == 'network' || $scope.api == 'sql' || $scope.api == 'system' ? 'ip' : $scope.api == 'user' ? 'username' : $scope.api == 'upload' ? 'SFN' : '';
     $scope.url_get_data = 'http://' + $scope.api_link + '/api/' + $scope.api + '?callback=JSON_CALLBACK&start=' + $scope.start + '&end=' + $scope.end + $scope.temp;
+
+    $scope.focus = 0;
+    $scope.page_index = 0;
+    $scope.range = function (n) {
+        var arr = [];
+        for (var i = 0; i < n; i++) {
+            arr.push(i);
+        }
+        return arr;
+    };
     $scope.get_data = function (e) {
         $http.jsonp(e).success(function (res) {
+            console.log(res)
             $scope.txt = res.data;
             $scope.len = res.len;
             $scope.personal_img = res.personal_img;
@@ -50,15 +61,6 @@ app.controller('siteCtrl', function ($scope, $http) {
             $scope.total_page = (res.len % 10) == 0 ? parseInt(res.len / 10) : parseInt(res.len / 10) + 1;
             $scope.page = $scope.range($scope.total_page);
         });
-    };
-    $scope.focus = 0;
-    $scope.page_index = 0;
-    $scope.range = function (n) {
-        var arr = [];
-        for (var i = 0; i < n; i++) {
-            arr.push(i);
-        }
-        return arr;
     };
     $scope.page_index = 0;
     $scope.next_btn = function () {
@@ -273,13 +275,20 @@ app.controller('siteCtrl', function ($scope, $http) {
         }
     };
     $scope.search_input = function (e) {
-        $scope.temp = $scope.search_info == '' ? '' : '&' + $scope.which + '=' + $scope.search_info;
-        $scope.url_get_data = 'http://' + $scope.api_link + '/api/' + $scope.api + '?callback=JSON_CALLBACK&start=' + $scope.start + '&end=' + $scope.end + $scope.temp;
-        var keycode = window.event ? e.keyCode : e.which;
-        if (keycode == 13) {
-            $scope.get_data($scope.url_get_data);
+        if (e) {
+            $scope.start = 0;
+            $scope.end = 10;
+            $scope.focus = 0;
+            $scope.temp = $scope.search_info == '' ? '' : '&' + $scope.which + '=' + $scope.search_info;
+            $scope.page_index = 0;
+            $scope.url_get_data = 'http://' + $scope.api_link + '/api/' + $scope.api + '?callback=JSON_CALLBACK&start=' + $scope.start + '&end=' + $scope.end + $scope.temp;
+            var keycode = window.event ? e.keyCode : e.which;
+            if (keycode == 13) {
+                $scope.get_data($scope.url_get_data);
+            }
         }
     };
+
     function parseFormatNum(number, n) {
         if (n != 0) {
             n = (n > 0 && n <= 20) ? n : 2;
@@ -297,7 +306,7 @@ app.controller('siteCtrl', function ($scope, $http) {
             return show_html.split("").reverse().join("") + "." + sub_xs;
         }
     }
-    $scope.clean_post_data= function () {  
+    $scope.clean_post_data = function () {
         $('#file1').val('');
         $('#progress').html('');
         $('#progress').css('width', "0%");
@@ -306,23 +315,31 @@ app.controller('siteCtrl', function ($scope, $http) {
 
     $(':file').change(function () {
         $('#progress').html('');
-        $('#progress').css('width', "0%");
-        var file = this.files[0];
-        var _name = file ? file.name.split('.') : '';
-        var name = file ? _name[0] : '未知';
-        var size = file ? parseFormatNum(file.size / 1024 / 1024, 2) + 'MB' : '未知';
-        var type = _name.length > 1 ? _name[1] : '未知';
-        if (file) {
-            $("#info").html("文件名：" + name + "<br>文件类型：" + type + "<br>文件大小：" + size);
+        $('#progress').css('width', "");
+        //var file = this.files[0];
+        var file = $("#file1")[0].files;
+        console.log(file.length);
+        var b = '';
+        if (file.length > 9) {
+            alert('上传文件数量不能超过10');
         } else {
-            $("#info").html('');
+            for (var i = 0; i < file.length; i++) {
+                console.log(file[i]);
+                var _name = file ? file[i].name.split('.') : '';
+                //var name = file ? _name[0] : '未知';
+                var size = file ? parseFormatNum(file[i].size / 1024 / 1024, 2) + 'MB' : '未知';
+                var type = _name.length > 1 ? _name[1] : '未知';
+                b = b + "<hr>文件名：" + file[i].name + "  |  "+" 大小：" + size + "<br>";
+            }
+            $("#info").html(b);
         }
     });
 
     $scope.upload = function () {
         if ($('#file1').val()) {
+            $('#progress').css('width', "");
             var formData = new FormData($('form')[0]);
-            var link="http://127.0.0.1/upload/file";
+            var link = "http://127.0.01/upload/file";
             formData.append("property", "value");
             $.ajax({
                 url: link,
